@@ -1,7 +1,8 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
-
+import java.time.format.DateTimeFormatter;
 public class Utilisateur {
     static int lastId = 0;
     private int id;
@@ -18,6 +19,10 @@ public class Utilisateur {
 
     public boolean plannifierTacheAuto(Tache tache) {
         return this.calendrier.plannifierTacheAuto(tache);
+    }
+
+    public boolean plannifierTacheAuto(Tache tache, LocalDate dateLimit) {
+        return this.calendrier.plannifierTacheAuto(tache, dateLimit);
     }
 
     // this will return a tache introduit par user
@@ -37,8 +42,8 @@ public class Utilisateur {
 
         System.out.println("La date limite (AAAA-MM-JJ): ");
         String dateString = sc.next();
-
-        Date dateLimite = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate dateLimite = LocalDate.parse(dateString, formatter);
 
         System.out.println("La categorie de la tache (STUDIES,WORK,HOBBY,SPORT,HEALTH,PERSONAL_FINANCE,ETC): ");
         String categorieString = sc.nextLine();
@@ -50,9 +55,9 @@ public class Utilisateur {
         if (type.toLowerCase().compareTo("simple") == 0) {
             System.out.println("Entrer la periodicite de la tache: ");
             int periode = sc.nextInt();
-            t = new TacheSimple(nom, duree, priorite, dateLimite, categorie, null, periode);
+            t = new TacheSimple(nom, duree, priorite, dateLimite, categorie, EtatAvancement.notRealised, periode);
         } else {
-            t = new TacheDecomposable(nom, duree, priorite, dateLimite, categorie, null, null);
+            t = new TacheDecomposable(nom, duree, priorite, dateLimite, categorie, EtatAvancement.notRealised, nom + Integer.toString(1), 1);
         }
         return t;
     }

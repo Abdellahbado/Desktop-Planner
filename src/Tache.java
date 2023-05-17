@@ -1,19 +1,18 @@
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Tache {
     protected String nom;
     protected long duree;
     protected Priorite priorite;
-    protected Date dateLimite;
+    protected LocalDate dateLimite;
     protected Categorie categorie;
     protected EtatAvancement etatAvancement;
 
     // protected boolean decomposable;
-    public Tache(String nom, long duree, Priorite priorite, Date dateLimite,
+    public Tache(String nom, long duree, Priorite priorite, LocalDate dateLimite,
                  Categorie categorie, EtatAvancement etatAvancement) {
         this.nom = nom;
-        this.duree = duree;
+        this.duree = duree; //en minutes
         this.priorite = priorite;
         this.dateLimite = dateLimite;
         this.categorie = categorie;
@@ -73,11 +72,11 @@ public class Tache {
         this.priorite = priorite;
     }
 
-    public Date getDateLimite() {
+    public LocalDate getDateLimite() {
         return dateLimite;
     }
 
-    public void setDateLimite(Date dateLimite) {
+    public void setDateLimite(LocalDate dateLimite) {
         this.dateLimite = dateLimite;
     }
 
