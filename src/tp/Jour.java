@@ -47,13 +47,14 @@ public class Jour  implements Comparable <Jour> {
     public LocalDate getDate() {
         return date;
      }
-    public void planifierManuellement(TacheSimple tache) {
+    public void planifierManuellement(LocalTime debut ,TacheSimple tache) {
         TreeSet<Creneau> nouveauxCreneaux = new TreeSet<>();
        
         for (Creneau creneau : listeCreneaux) {
             if ((creneau.getEtatCreneau() == EtatCreneau.Libre) 
                     && (Math.abs(Duration.between(creneau.getHeureFin(),creneau.getHeureDebut()).toMinutes()) >= tache.getDuree())
-                    &&(tache.etatAvancement != EtatAvancement.InProgress)
+                    &&(tache.etatAvancement != EtatAvancement.InProgress
+                    && (creneau.getHeureDebut().equals(debut)))
                       ) {
                 tache.setEtatAvancement(EtatAvancement.InProgress);
                 

@@ -30,9 +30,9 @@ public class Calendrier {
 			  jour.ajouterCreneau(debut,fin);
 		  }
 	  });
-  }
+     }
      
-    public void planifierManuellement(LocalDate date, TacheSimple tache) {
+    public void planifierManuellement(LocalDate date,LocalTime debut, TacheSimple tache) {
     	
         jours.forEach(jour -> {
             if(date.isEqual(jour.getDate())) {
@@ -42,7 +42,7 @@ public class Calendrier {
             
             if((!date.isEqual(jour.getDate()))&&(tache.getPeriodicite()>1) && (jours.headSet(jour).size() % tache.getPeriodicite()) == 0 && (tache.getEtatAvancement()== EtatAvancement.InProgress))
             {   tache.setEtatAvancement(null);
-            	jour.planifierManuellement(tache);
+            	jour.planifierManuellement(debut,tache);
             	if(tache.getEtatAvancement()== null){tache.setEtatAvancement(EtatAvancement.InProgress);}
             }
         });

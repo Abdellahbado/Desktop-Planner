@@ -3,50 +3,60 @@ package tp;
 import java.util.*;
 
 
-public class Utilisateur {
-	   static int lastId = 0;
-	    private int id;
+public class Utilisateur implements Comparable<Utilisateur> {
+	  // static int lastId = 0;
+	  //  private int id;
+	    private String pseudo;
+	    private String motDePasse;
+	    private boolean connected;
 
 	    
 	    private Calendrier calendrier;
 	    private SortedSet<Projet> listeProjets = new TreeSet<Projet>();
-	    private Compte compte;
-	    private long dureeMinimale;
+	 //   private long dureeMinimale;
 	    private Badge [] listeBadges;
 	    private int encouragement;
+	  
 	    
-	    public void sAuthentifier(HashSet<Compte> comptes) {
+	    public Utilisateur (String pseudo, String motDePasse) {
+	    	this.pseudo = pseudo;
+	    	this.motDePasse = motDePasse;
+	    	
+	    } 
+	    
+	    
+	    public void setConnected(boolean state) {
+	    	this.connected = state;
+	    }
+	    
+	    
+	    
+	    @Override
+	    public boolean equals(Object obj) {
+	        if (this == obj) {
+	            return true; 
+	        }
 
-              for (Compte compte :comptes) {
-                if(compte.getPseudo() == this.compte.getPseudo()) {
-                	this.compte.setConnected(true);
-                	System.out.println("connected");
-                }
-                
-                      }
-              if(this.compte.getConnectivite()== false) {
-            	  System.out.println("not connected");
-              }
+	        if (obj == null || getClass() != obj.getClass()) {
+	            return false; 
+	        }
+
+	        Utilisateur otherUser = (Utilisateur) obj; 
+
+	       
+	        return Objects.equals(pseudo, otherUser.pseudo)
+	                && Objects.equals(motDePasse, otherUser.motDePasse);
 	    }
-	    
-	    
-	    public void creerCompte(String pseudo, String motDePasse,HashSet<Compte> comptes ) {
-	    	 boolean b= false;
-	    	 for (Compte compte :comptes) {
-	                if(compte.getPseudo() == pseudo) {
-	                	System.out.println("this name already exist");
-	                	b = true;
-	                }
-	                };
-	                if(b==false) {
-	                	this.compte = new Compte (pseudo,motDePasse);
-	                }
-	                comptes.add(this.compte);
-	    }
-	    
-	    
+	    @Override
 	    public int hashCode() {
-	 	   return this.compte.getPseudo().hashCode();
+	        return Objects.hash(pseudo);
 	    }
+
+
+		@Override
+		public int compareTo(Utilisateur o) {
+			
+			return 0;
+		}
 	    
 }
