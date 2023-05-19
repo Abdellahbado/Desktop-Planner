@@ -92,33 +92,7 @@ public class Creneau implements Comparable<Creneau>{
 
     }
 
-    public boolean estDecomposable(long dureeTache, long duree_min) { //méthode qui indique si on peut décomposer un creneau donné lors de l'introduction d'une tache
 
-        Duration duree = Duration.between(this.heureDebut, this.heureFin);
-        return duree.toMinutes() - dureeTache > duree_min;
-        //on peut decomposer quand la duree du creneau - duree tache > duree minimale
-    }
-
-    //on utilise cette méthode seulement après s'assurer que le créneau est décomposable par la fonction précédente
-    public Creneau decomposer(Tache tache, long duree_min) {
-        long dureeTache = tache.getDuree();
-        Creneau cr1, cr2;
-        cr1 = this;
-        LocalTime h = cr1.getHeureDebut();
-
-        // ajout de la durée en minutes à l'heure de départ
-        LocalTime heureArrivee = h.plusMinutes(dureeTache);
-
-        cr2 = new Creneau(heureArrivee, this.getHeureFin(), EtatCreneau.Libre, null);
-
-        cr1.setHeureFin(heureArrivee);
-        cr1.planifierTache(tache);
-
-        //  tab[0].afficher();
-        //  tab[1].afficher();
-
-        return cr2;
-    }
 
     public void planifierTache(Tache tache) {
         this.tache = tache;

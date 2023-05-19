@@ -11,4 +11,10 @@ public class Projet {
         this.description = description;
         this.listeTaches = new HashSet<Tache>(listeTaches);
     }
+    @Override
+    public int hashCode() {
+        int result = nomProjet != null ? nomProjet.hashCode() : 0;
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        return result;
+    }
 }

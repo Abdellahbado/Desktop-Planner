@@ -8,6 +8,7 @@ public class Tache {
     protected Categorie categorie;
     protected EtatAvancement etatAvancement;
 
+
     // protected boolean decomposable;
     public Tache(String nom, long duree, Priorite priorite, LocalDate dateLimite,
                  Categorie categorie, EtatAvancement etatAvancement) {

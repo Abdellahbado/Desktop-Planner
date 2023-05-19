@@ -68,12 +68,12 @@ public class Jour implements Comparable<Jour> {
         return this.date;
     }
 
-    public void creerCreneau(Creneau creneau) {
-        listeCreneaux.add(creneau);
-        System.out.println("Creneau: " + creneau.getHeureDebut() + "-" + creneau.getHeureFin() + " crée avec succes");
+    public void ajouterCreneau(Creneau creneau){
+        this.listeCreneaux.add(creneau);
     }
 
     public int compareTo(Jour jour) {
         return this.date.compareTo(jour.getDate());
     }
+
 }

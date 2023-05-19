@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -13,6 +14,9 @@ public class Calendrier {
         for (Jour jour : listeJours) {
             jour.afficher();
         }
+    }
+    public void ajouterJour(Jour jour) {
+        listeJours.add(jour);
     }
 
     public boolean plannifierTacheAuto(Tache tache) {
@@ -38,7 +42,6 @@ public class Calendrier {
         // on parcours les jours et pour chaque jour on appelle plannifierDecomp
         // si elle retourne une tache donc il ya encore une tahce qui n'a pas eté programmée
         TacheDecomposable t1 = tache;
-
         while (iterator.hasNext()) {
             Jour jour = iterator.next();
             t1.afficher();
@@ -48,14 +51,18 @@ public class Calendrier {
         return false;
     }
 
-    public void creerCreneau(Creneau creneau, Jour jour) {
-        Iterator<Jour> iterator = this.listeJours.iterator();
+    public void introduitCreneau(LocalTime heurD,LocalTime heurF,LocalDate date){
         boolean trouv = false;
-        while ((iterator.hasNext()) && (!trouv)) {
-            Jour j = iterator.next();
-            if (j.getDate().equals(jour.getDate())) {
-                j.creerCreneau(creneau);
+        Iterator<Jour> iterator = this.listeJours.iterator();
+        while(iterator.hasNext() && !trouv){
+            Jour jour = iterator.next();
+            if(jour.getDate().equals(date)){
+                Creneau creneau = new Creneau(heurD,heurF,EtatCreneau.Libre,null);
+                jour.ajouterCreneau(creneau);
+                trouv = true;
             }
         }
     }
+
+
 }
