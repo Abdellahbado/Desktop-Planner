@@ -19,12 +19,12 @@ public class Utilisateur {
     private int encouragement;
 
 
-    public boolean plannifierTacheAuto(Tache tache) {
-        return this.calendrier.plannifierTacheAuto(tache);
+    public boolean plannifierTacheAuto(Tache tache, int n) {
+        return this.calendrier.plannifierTacheAuto(tache, n);
     }
 
-    public boolean plannifierTacheAuto(Tache tache, LocalDate dateLimit) {
-        return this.calendrier.plannifierTacheAuto(tache, dateLimit);
+    public boolean plannifierTacheAuto(Tache tache, LocalDate dateLimit, int n) {
+        return this.calendrier.plannifierTacheAuto(tache, dateLimit, n);
     }
 
     // this will return a tache introduit par user
@@ -37,6 +37,11 @@ public class Utilisateur {
             t = new TacheDecomposable(nom, duree, priorite, dateLimite, categorie, EtatAvancement.Unscheduled, nom + " " + Integer.toString(1), 1);
         }
         this.tachesIntroduites.add(t);
+    }
+
+    public void creerProjet(String titre, String description) {
+        Projet projet = new Projet(titre, description, null);
+        this.listeProjets.add(projet);
     }
 
 }

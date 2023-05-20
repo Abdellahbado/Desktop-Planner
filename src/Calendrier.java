@@ -15,49 +15,77 @@ public class Calendrier {
             jour.afficher();
         }
     }
+
     public void ajouterJour(Jour jour) {
         listeJours.add(jour);
     }
 
-    public boolean plannifierTacheAuto(Tache tache) {
+    public boolean plannifierTacheAuto(Tache tache, int n) {
         Iterator<Jour> iterator = this.listeJours.iterator();
+        int i = 0;
+        boolean tachePlanifiee = false;
         while (iterator.hasNext()) {
+
             Jour jour = iterator.next();
-            if (jour.plannifierTacheAuto(tache)) return true;
+            if ((i % n) == 0) {
+                if (jour.plannifierTacheAuto(tache)) tachePlanifiee = true;
+            }
+            i++;
         }
-        return false;
+        return tachePlanifiee;
     }
 
-    public boolean plannifierTacheAuto(Tache tache, LocalDate dateLimit) {
+    public boolean plannifierTacheAuto(Tache tache, LocalDate dateLimit, int n) {
         Iterator<Jour> iterator = this.listeJours.iterator();
+        int i = 0;
+        boolean tachePlanifiee = false;
         while ((iterator.hasNext()) && (iterator.next().getDate().compareTo(dateLimit) < 0)) {
             Jour jour = iterator.next();
-            if (jour.plannifierTacheAuto(tache)) return true;
+            if ((i % n) == 0) {
+                if (jour.plannifierTacheAuto(tache)) tachePlanifiee = true;
+            }
+            i++;
         }
         return false;
     }
 
     public boolean plannifierTacheDecomp(TacheDecomposable tache) {
-        Iterator<Jour> iterator = this.listeJours.iterator();
         // on parcours les jours et pour chaque jour on appelle plannifierDecomp
         // si elle retourne une tache donc il ya encore une tahce qui n'a pas eté programmée
-        TacheDecomposable t1 = tache;
-        while (iterator.hasNext()) {
-            Jour jour = iterator.next();
-            t1.afficher();
-            t1 = jour.plannifierTacheDecomp(t1);
-            if (t1 == null) return true; // la tache a ete planifier
+        for (Jour jour : listeJours) {
+            tache.afficher();
+            tache = jour.plannifierTacheDecomp(tache);
+            if (tache == null) {
+                return true; // la tache a ete planifier
+            }
         }
         return false;
     }
 
-    public void introduitCreneau(LocalTime heurD,LocalTime heurF,LocalDate date){
+
+    public boolean plannifierTacheDecomp(TacheDecomposable tache, LocalDate dateLimite) {
+        for (Jour jour : listeJours) {
+            if (jour.getDate().isBefore(dateLimite)) {
+                tache.afficher();
+                tache = jour.plannifierTacheDecomp(tache);
+                if (tache == null) {
+                    return true; // la tache a ete planifier
+                }
+            } else {
+                break;
+            }
+        }
+        return false;
+    }
+
+
+    public void introduitCreneau(LocalTime heurD, LocalTime heurF, LocalDate date) {
         boolean trouv = false;
         Iterator<Jour> iterator = this.listeJours.iterator();
-        while(iterator.hasNext() && !trouv){
+        while (iterator.hasNext() && !trouv) {
             Jour jour = iterator.next();
-            if(jour.getDate().equals(date)){
-                Creneau creneau = new Creneau(heurD,heurF,EtatCreneau.Libre,null);
+            if (jour.getDate().equals(date)) {
+                Creneau creneau = new Creneau(heurD, heurF, EtatCreneau.Libre, null);
                 jour.ajouterCreneau(creneau);
                 trouv = true;
             }
