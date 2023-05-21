@@ -1,21 +1,15 @@
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-public class Jour implements Comparable<Jour> {
+public class Jour implements Comparable<Jour>, Serializable {
     static int nombreJours = 0;
     private TreeSet<Creneau> listeCreneaux;
     private LocalDate date;
-    //private EtatAvancement etatAvancement;
-    //private int nbTachesMinimales;
-    public void afficher() {
-        System.out.println("Date: " + date);
-        for (Creneau creneau : listeCreneaux) {
-            creneau.afficher();
-        }
-    }
-    public Jour(LocalDate date,TreeSet<Creneau> listeCreneaux) {
+
+    public Jour(LocalDate date, TreeSet<Creneau> listeCreneaux) {
         this.date = date;
 
         this.listeCreneaux = listeCreneaux;
@@ -29,6 +23,16 @@ public class Jour implements Comparable<Jour> {
         Creneau cr = new Creneau(heurDeb, heurFin, EtatCreneau.Libre, null);
         listeCreneaux = new TreeSet<Creneau>();
         listeCreneaux.add(cr);*/
+    }
+
+    //private EtatAvancement etatAvancement;
+    //private int nbTachesMinimales;
+    public void afficher() {
+        System.out.println("---------------------------------------------------------------");
+        System.out.println("Date: " + date);
+        for (Creneau creneau : listeCreneaux) {
+            creneau.afficher();
+        }
     }
 
     public boolean plannifierTacheAuto(Tache tache) {
@@ -68,7 +72,7 @@ public class Jour implements Comparable<Jour> {
         return this.date;
     }
 
-    public void ajouterCreneau(Creneau creneau){
+    public void ajouterCreneau(Creneau creneau) {
         this.listeCreneaux.add(creneau);
     }
 

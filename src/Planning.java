@@ -1,12 +1,23 @@
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-public class Calendrier {
+public class Planning implements Serializable {
     private TreeSet<Jour> listeJours;
 
-    public Calendrier(TreeSet<Jour> listeJours) {
+    public Planning(LocalDate dateD, LocalDate dateF) {
+        listeJours = new TreeSet<>();
+
+        LocalDate currentDate = dateD;
+        while (!currentDate.isAfter(dateF)) {
+            this.listeJours.add(new Jour(currentDate, new TreeSet<Creneau>()));
+            currentDate = currentDate.plusDays(1);
+        }
+    }
+
+    public Planning(TreeSet<Jour> listeJours) {
         this.listeJours = listeJours;
     }
 
@@ -28,9 +39,12 @@ public class Calendrier {
 
             Jour jour = iterator.next();
             if ((i % n) == 0) {
-                if (jour.plannifierTacheAuto(tache)) tachePlanifiee = true;
+                if (jour.plannifierTacheAuto(tache)) {
+                    tachePlanifiee = true;
+                }
             }
-            i++;
+            if (tachePlanifiee) i++;
+
         }
         return tachePlanifiee;
     }
@@ -53,7 +67,6 @@ public class Calendrier {
         // on parcours les jours et pour chaque jour on appelle plannifierDecomp
         // si elle retourne une tache donc il ya encore une tahce qui n'a pas eté programmée
         for (Jour jour : listeJours) {
-            tache.afficher();
             tache = jour.plannifierTacheDecomp(tache);
             if (tache == null) {
                 return true; // la tache a ete planifier
@@ -92,5 +105,16 @@ public class Calendrier {
         }
     }
 
+    public void introduitCreneau(Creneau creneau, LocalDate date) {
+        boolean trouv = false;
+        Iterator<Jour> iterator = this.listeJours.iterator();
+        while (iterator.hasNext() && !trouv) {
+            Jour jour = iterator.next();
+            if (jour.getDate().equals(date)) {
+                jour.ajouterCreneau(creneau);
+                trouv = true;
+            }
+        }
+    }
 
 }

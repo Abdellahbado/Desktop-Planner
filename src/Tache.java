@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Tache {
+public abstract class Tache implements Serializable,Comparable<Tache> {
     protected String nom;
     protected long duree;
     protected Priorite priorite;
@@ -21,13 +22,14 @@ public class Tache {
     }
 
 
-    public void afficher() {
+    protected void afficher() {
         System.out.println("Nom de la tâche: " + this.nom);
         System.out.println("Durée de la tâche: " + this.duree + " minutes");
         System.out.println("Priorité de la tâche: " + this.priorite);
         System.out.println("Date limite de la tâche: " + this.dateLimite);
         System.out.println("Catégorie de la tâche: " + this.categorie);
         System.out.println("État d'avancement de la tâche: " + this.etatAvancement);
+        System.out.println("From tache  " );
     }
 
     public boolean delaiDepasse(LocalDate date) {
@@ -105,5 +107,7 @@ public class Tache {
         return this.hashCode() == ((Tache) o).hashCode();
     }
 
-
+    public int compareTo(Tache tache1){
+        return this.priorite.compareTo(tache1.priorite);
+    }
 }

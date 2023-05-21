@@ -26,7 +26,7 @@ public class Projet {
         this.listeTaches.add(tache);
     }
 
-    public boolean plannifierProjet(Calendrier calendrier) {
+    public boolean plannifierProjet(Planning calendrier) {
         if (this.listeTaches == null) return false;
         boolean tachesPlanifiee = false;
         for (Tache tache : this.listeTaches) {

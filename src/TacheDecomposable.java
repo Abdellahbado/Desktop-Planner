@@ -1,8 +1,6 @@
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.Locale;
 
-public class TacheDecomposable extends Tache implements Comparable<TacheDecomposable> {
+public class TacheDecomposable extends Tache {
     //private SortedSet<Tache> ensembleSousTaches;
     private String nomSousTache;
     private int numSousTache;
@@ -12,15 +10,19 @@ public class TacheDecomposable extends Tache implements Comparable<TacheDecompos
         this.nomSousTache = nomSousTache;
         this.numSousTache = numSousTache;
     }
-    public void afficher(){
+
+    @Override
+    public void afficher() {
         super.afficher();
         System.out.println("Nom de la sous-tache: " + nomSousTache);
         System.out.println("Numéro de la sous-tache: " + numSousTache);
+        System.out.println("From tache decomposable " );
     }
+
     public TacheDecomposable decomposerTache(Long dureeCreneau) {
         if (this.getDuree() > dureeCreneau) {
             int i = this.getNumSousTache();
-            String nomSousTacheNouv = this.getNom()+" " + Integer.toString(i + 1);
+            String nomSousTacheNouv = this.getNom() + " " + Integer.toString(i + 1);
             TacheDecomposable t = new TacheDecomposable(this.getNom(), this.getDuree() - dureeCreneau, this.priorite, this.dateLimite, this.categorie, this.etatAvancement, nomSousTacheNouv, i + 1);
             this.setDuree(dureeCreneau);
             return t;
@@ -28,10 +30,6 @@ public class TacheDecomposable extends Tache implements Comparable<TacheDecompos
         return null;
     }
 
-    @Override
-    public int compareTo(TacheDecomposable other) {
-        return this.nom.compareTo(other.nom);
-    }
 
     public int getNumSousTache() {
         return this.numSousTache;

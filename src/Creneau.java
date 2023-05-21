@@ -1,9 +1,10 @@
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-public class Creneau implements Comparable<Creneau>{
+public class Creneau implements Comparable<Creneau>, Serializable {
     private Tache tache;
     private LocalTime heureDebut;
     private LocalTime heureFin;
@@ -82,16 +83,14 @@ public class Creneau implements Comparable<Creneau>{
     }
 
     public void afficher() {
+        System.out.println("Le creneu heure debut:" + this.heureDebut + ", heure fin: " + this.heureFin);
         System.out.println("Heure de début: " + this.heureDebut);
         System.out.println("Heure de fin: " + this.heureFin);
         System.out.println("Etat du créneau:" + this.etatCreneau);
         if (tache != null) {
             tache.afficher();
         }
-        System.out.println("----------");
-
     }
-
 
 
     public void planifierTache(Tache tache) {
@@ -110,18 +109,19 @@ public class Creneau implements Comparable<Creneau>{
     // this function is called only on tacheDecomposable
     public TacheDecomposable plannifierTacheDecomp(TacheDecomposable tache) {
         long dureCreneau = this.getDuration().toMinutes();
-            if (dureCreneau >= tache.duree) {
-                this.planifierTache(tache); // cas trivial
-                return null;
-            } else {
-                // on duplique la tache dans une nouvelle var et on la planifier et on retourne
-                // le rest de la tache mais la duree doit etre >  30
-                TacheDecomposable nouvTache = tache.decomposerTache(dureCreneau);
-                this.planifierTache(tache);
-                return nouvTache;
-            }
+        if (dureCreneau >= tache.duree) {
+            this.planifierTache(tache); // cas trivial
+            return null;
+        } else {
+            // on duplique la tache dans une nouvelle var et on la planifier et on retourne
+            // le rest de la tache mais la duree doit etre >  30
+            TacheDecomposable nouvTache = tache.decomposerTache(dureCreneau);
+            this.planifierTache(tache);
+            return nouvTache;
+        }
     }
-    public int compareTo(Creneau creneau){
+
+    public int compareTo(Creneau creneau) {
         return this.heureDebut.compareTo(creneau.getHeureDebut());
     }
 }
