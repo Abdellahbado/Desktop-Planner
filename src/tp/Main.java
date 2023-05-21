@@ -24,7 +24,7 @@ public class Main {
 	    
 	   ca.setJours( LocalDate.of(2022, 1, 2), LocalDate.of(2022, 1, 10));
 	   ca.ajouterCreneau(LocalDate.of(2022, 1, 2), LocalTime.of(12, 0), LocalTime.of(13, 0));
-	    ca.planifierManuellement( LocalDate.of(2022, 1, 2), t);
+	    ca.planifierManuellement( LocalDate.of(2022, 1, 2), null, t);
 	    
 	}
  

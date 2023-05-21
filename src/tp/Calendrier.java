@@ -36,7 +36,7 @@ public class Calendrier {
     	
         jours.forEach(jour -> {
             if(date.isEqual(jour.getDate())) {
-                jour.planifierManuellement(tache);
+                jour.planifierManuellement(debut, tache);
            
             }
             
@@ -47,4 +47,13 @@ public class Calendrier {
             }
         });
     }
+    
+    
+    
+    
+    
+    
+    
 }
+
+

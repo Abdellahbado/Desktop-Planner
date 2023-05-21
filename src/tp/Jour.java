@@ -47,6 +47,7 @@ public class Jour  implements Comparable <Jour> {
     public LocalDate getDate() {
         return date;
      }
+    
     public void planifierManuellement(LocalTime debut ,TacheSimple tache) {
         TreeSet<Creneau> nouveauxCreneaux = new TreeSet<>();
        
@@ -112,4 +113,9 @@ public class Jour  implements Comparable <Jour> {
     public int hashCode() {
         return Objects.hash(date);
     }
+    
+    
+    
+    
+    
     }

@@ -7,21 +7,25 @@ public class Application {
   
    private HashSet<Utilisateur> utilisateurs = new HashSet<>();
    
-     public void signUp (String pseudo, String passWord) {
+     public boolean signUp (String pseudo, String passWord) {
     	  
     	 utilisateurs.add(new Utilisateur(pseudo, passWord));
+    	 return true;
      }
      
     
-     public void signIn (String pseudo, String passWord) {
+     public boolean signIn (String pseudo, String passWord) {
    	     Utilisateur u = new Utilisateur(pseudo,passWord);
+   	     boolean b = false;
     	 for (Utilisateur user : utilisateurs) {
              if(user.equals(u)) {
             	 user.setConnected(true);
+            	 b = true;
              }
+            
          }
     	
-    	
+    	return b;
      }
      
      
