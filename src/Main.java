@@ -1,4 +1,3 @@
-import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.HashSet;
@@ -67,8 +66,10 @@ public class Main {
         listeUtilisateures.add(utilisateur);
         listeUtilisateures.add(utilisateur1);
         MyDesktopPlanner myDesktopPlanner = new MyDesktopPlanner(listeUtilisateures);
-        String filename = "utilisateur.ser"; // File name to store the serialized object
-        try (FileOutputStream fileOut = new FileOutputStream(filename);
+        String filename = "utilisateurs.ser"; // File name to store the serialized object
+        myDesktopPlanner.serialize(filename);
+        MyDesktopPlanner myDesktopPlanner1 = myDesktopPlanner.deserialize(filename);
+        /*try (FileOutputStream fileOut = new FileOutputStream(filename);
              ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
             out.writeObject(myDesktopPlanner);
             System.out.println("Object stored in " + filename);
@@ -85,7 +86,7 @@ public class Main {
             // Use the deserialized MyDesktopPlanner object as needed
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
         System.out.println("-------------------------------------------------------------------");
         System.out.println("Apres la serialisation: ");
 
