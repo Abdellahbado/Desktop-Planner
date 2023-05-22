@@ -2,6 +2,7 @@ import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Creneau implements Comparable<Creneau>, Serializable {
@@ -9,6 +10,7 @@ public class Creneau implements Comparable<Creneau>, Serializable {
     private LocalTime heureDebut;
     private LocalTime heureFin;
     private EtatCreneau etatCreneau;
+    private boolean bloque;
 
     public Creneau(LocalTime heure1, LocalTime heure2, EtatCreneau etCr, Tache tache) {
         this.heureDebut = heure1;
@@ -16,7 +18,6 @@ public class Creneau implements Comparable<Creneau>, Serializable {
         this.tache = tache;
         this.etatCreneau = etCr;
     }
-
 
     public static Creneau creerCreneau() {
         Creneau cr = new Creneau(null, null, EtatCreneau.Occupe, null);
@@ -48,6 +49,24 @@ public class Creneau implements Comparable<Creneau>, Serializable {
         cr.setEtatCreneau(EtatCreneau.Occupe);
         ;
         return cr;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Creneau other = (Creneau) obj;
+        // Compare attributes to determine equality
+        return Objects.equals(heureDebut, other.getHeureDebut()) &&
+                Objects.equals(heureFin, other.getHeureFin());
+    }
+
+    public void setBloque(boolean b) {
+        this.bloque = b;
     }
 
     public LocalTime getHeureDebut() {

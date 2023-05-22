@@ -51,7 +51,7 @@ public class Utilisateur implements Serializable {
         return this.tachesIntroduites;
     }
 
-    public boolean plannifierTacheAuto(Tache tache, int n) {
+    public boolean plannifierTacheAuto(TacheSimple tache, int n) {
         return this.calendrier.plannifierTacheAuto(tache, n);
     }
 

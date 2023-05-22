@@ -1,4 +1,4 @@
-import java.io.Serializable;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Iterator;
@@ -21,6 +21,34 @@ public class Planning implements Serializable {
         this.listeJours = listeJours;
     }
 
+    public static void serializePlanning(Planning planningVariable, String filename) {
+        try {
+            FileOutputStream fileOutputStream = new FileOutputStream(filename);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(planningVariable);
+            objectOutputStream.close();
+            fileOutputStream.close();
+            System.out.println("Planning variable serialized and saved to file: " + filename);
+        } catch (Exception e) {
+            System.out.println("Error occurred while serializing the planning variable: " + e.getMessage());
+        }
+    }
+
+    public static Planning deserializePlanningVariable(String filename) {
+        Object planningVariable = null;
+        try {
+            FileInputStream fileInputStream = new FileInputStream(filename);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
+            planningVariable = objectInputStream.readObject();
+            objectInputStream.close();
+            fileInputStream.close();
+            System.out.println("Planning variable deserialized from file: " + filename);
+        } catch (Exception e) {
+            System.out.println("Error occurred while deserializing the planning variable: " + e.getMessage());
+        }
+        return (Planning) planningVariable;
+    }
+
     public void afficherListeJours() {
         for (Jour jour : listeJours) {
             jour.afficher();
@@ -31,7 +59,7 @@ public class Planning implements Serializable {
         listeJours.add(jour);
     }
 
-    public boolean plannifierTacheAuto(Tache tache, int n) {
+    public boolean plannifierTacheAuto(TacheSimple tache, int n) {
         Iterator<Jour> iterator = this.listeJours.iterator();
         int i = 0;
         boolean tachePlanifiee = false;
@@ -47,6 +75,32 @@ public class Planning implements Serializable {
 
         }
         return tachePlanifiee;
+    }
+
+    public boolean plannifierTacheManu(TacheSimple tache, LocalDate date, LocalTime heurD, boolean bloque) {
+        Iterator<Jour> iterator = this.listeJours.iterator();
+        int n = tache.getPeriodicite();
+        int i = 0;
+        boolean tachePlanifiee = false;
+        while (iterator.hasNext()) {
+
+            Jour jour = iterator.next();
+            if (jour.getDate().equals(date)) {
+                tachePlanifiee = jour.plannifierTacheManu(tache, heurD, bloque);
+                return tachePlanifiee;
+            }
+
+        }
+        return tachePlanifiee;
+    }
+
+    public void creerCreneauPeriodique(LocalTime heurD, LocalTime heurF, int p) {
+        int i = 0;
+        for (Jour jour : this.listeJours) {
+            if (i % p == 0)
+                jour.creerCreneauPeriodique(heurD, heurF);
+            i++;
+        }
     }
 
     public boolean plannifierTacheAuto(Tache tache, LocalDate dateLimit, int n) {
@@ -74,7 +128,6 @@ public class Planning implements Serializable {
         }
         return false;
     }
-
 
     public boolean plannifierTacheDecomp(TacheDecomposable tache, LocalDate dateLimite) {
         for (Jour jour : listeJours) {

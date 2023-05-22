@@ -1,7 +1,7 @@
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.*;
-import java.io.*;
+import java.util.HashSet;
 
 
 public class Main {
@@ -38,7 +38,7 @@ public class Main {
         // another user with different creneax and taches
         Planning planning1 = new Planning(LocalDate.of(2023, 5, 28), LocalDate.of(2023, 6, 6));
         TacheDecomposable tacheDecomposable1 = new TacheDecomposable("Faire CF", 240, Priorite.Low, LocalDate.of(2023, 6, 25), Categorie.STUDIES, EtatAvancement.notRealised, "Faire CF", 1);
-        TacheSimple tacheSimple1 = new TacheSimple("Projet", 60, Priorite.High, LocalDate.of(2023, 06, 25), Categorie.WORK, EtatAvancement.notRealised, 1);
+        TacheSimple tacheSimple1 = new TacheSimple("CF ANA", 60, Priorite.High, LocalDate.of(2023, 06, 25), Categorie.WORK, EtatAvancement.notRealised, 1);
         Creneau creneau11 = new Creneau(LocalTime.of(9, 0), LocalTime.of(10, 0), EtatCreneau.Libre, null);
         Creneau creneau12 = new Creneau(LocalTime.of(10, 0), LocalTime.of(11, 0), EtatCreneau.Libre, null);
         Creneau creneau13 = new Creneau(LocalTime.of(13, 0), LocalTime.of(14, 0), EtatCreneau.Libre, null);
@@ -47,18 +47,20 @@ public class Main {
         Creneau creneau16 = new Creneau(LocalTime.of(10, 0), LocalTime.of(11, 0), EtatCreneau.Libre, null);
         Creneau creneau17 = new Creneau(LocalTime.of(13, 0), LocalTime.of(14, 0), EtatCreneau.Libre, null);
         Creneau creneau18 = new Creneau(LocalTime.of(14, 0), LocalTime.of(15, 0), EtatCreneau.Libre, null);
-        planning1.introduitCreneau(creneau11, LocalDate.of(2023, 5, 29));
+        /*planning1.introduitCreneau(creneau11, LocalDate.of(2023, 5, 29));
         planning1.introduitCreneau(creneau12, LocalDate.of(2023, 5, 30));
         planning1.introduitCreneau(creneau13, LocalDate.of(2023, 5, 31));
         planning1.introduitCreneau(creneau14, LocalDate.of(2023, 6, 1));
         planning1.introduitCreneau(creneau15, LocalDate.of(2023, 6, 2));
         planning1.introduitCreneau(creneau16, LocalDate.of(2023, 6, 3));
         planning1.introduitCreneau(creneau17, LocalDate.of(2023, 6, 4));
-        planning1.introduitCreneau(creneau18, LocalDate.of(2023, 6, 5));
+        planning1.introduitCreneau(creneau18, LocalDate.of(2023, 6, 5));*/
+        planning1.creerCreneauPeriodique(LocalTime.of(21, 0), LocalTime.of(22, 0), 1);
         boolean bool2 = planning1.plannifierTacheDecomp(tacheDecomposable1);
-        boolean bool3 = planning1.plannifierTacheAuto(tacheSimple1, tacheSimple1.getPeriodicite());
+        //boolean bool4 = planning1.plannifierTacheAuto(tacheSimple1, tacheSimple1.getPeriodicite());
+        boolean bool4 = planning1.plannifierTacheManu(tacheSimple1, LocalDate.of(2023, 6, 2), LocalTime.of(9, 0), false);
         planning1.afficherListeJours();
-        System.out.println("Boolean = " + bool2 + " Boolean2 = " + bool3);
+        System.out.println("Boolean = " + bool2 + " Boolean2 = " + bool4);
         Utilisateur utilisateur1 = new Utilisateur(planning1);
 
         HashSet<Utilisateur> listeUtilisateures = new HashSet<>();
@@ -84,8 +86,13 @@ public class Main {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        System.out.println("--------------------------------------------");
+        System.out.println("-------------------------------------------------------------------");
         System.out.println("Apres la serialisation: ");
+
+/*
+        Planning.serializePlanning(planning1, "planning.ser");
+        Planning planning2 = Planning.deserializePlanningVariable("planning.ser");
+        planning2.afficherListeJours();*/
 
     }
 }

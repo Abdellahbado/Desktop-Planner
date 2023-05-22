@@ -34,7 +34,17 @@ public class Jour implements Comparable<Jour>, Serializable {
             creneau.afficher();
         }
     }
-
+    public void creerCreneauPeriodique(LocalTime heurD, LocalTime heurF){
+        Creneau creneau = new Creneau(heurD,heurF,EtatCreneau.Libre,null);
+        if(listeCreneaux != null && listeCreneaux.contains(creneau)){
+           return;
+        }else if(listeCreneaux == null){
+            listeCreneaux = new TreeSet<>();
+            listeCreneaux.add(creneau);
+        } else{
+            listeCreneaux.add(creneau);
+        };
+    }
     public boolean plannifierTacheAuto(Tache tache) {
         //fonction nchof fiha ida kayn creneau libre w la duree ta3o tkfi
         Iterator<Creneau> iterator = this.listeCreneaux.iterator();
@@ -51,6 +61,17 @@ public class Jour implements Comparable<Jour>, Serializable {
                     return true;
                 } else return false;
             } else return false;
+        }
+        return false;
+    }
+
+    public boolean plannifierTacheManu(TacheSimple tache, LocalTime heurD, boolean bloque) {
+        for (Creneau creneau : this.listeCreneaux) {
+            if (creneau.getHeureDebut().equals(heurD)) {
+                creneau.planifierTache(tache);
+                creneau.setBloque(bloque);
+                return true;
+            }
         }
         return false;
     }
