@@ -10,7 +10,6 @@ public class Creneau implements Comparable<Creneau>, Serializable {
     private LocalTime heureDebut;
     private LocalTime heureFin;
     private EtatCreneau etatCreneau;
-    private boolean bloque;
 
     public Creneau(LocalTime heure1, LocalTime heure2, EtatCreneau etCr, Tache tache) {
         this.heureDebut = heure1;
@@ -66,7 +65,9 @@ public class Creneau implements Comparable<Creneau>, Serializable {
     }
 
     public void setBloque(boolean b) {
-        this.bloque = b;
+        if (b == true)
+            this.etatCreneau = EtatCreneau.Bloque;
+        else this.etatCreneau = EtatCreneau.Occupe;
     }
 
     public LocalTime getHeureDebut() {

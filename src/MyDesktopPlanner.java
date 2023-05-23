@@ -35,14 +35,15 @@ public class MyDesktopPlanner implements Serializable {
         return myDesktopPlanner;
     }
 
-    public void signIn(String pseudo, String passWord) {
+    public boolean signIn(String pseudo, String passWord) {
         Utilisateur u = new Utilisateur(pseudo, passWord);
         for (Utilisateur user : listeUtilisateures) {
             if (user.equals(u)) {
                 user.setConnected(true);
+                return true;
             }
         }
-
+        return false;
 
     }
 

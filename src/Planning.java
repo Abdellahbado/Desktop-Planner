@@ -103,7 +103,7 @@ public class Planning implements Serializable {
         }
     }
 
-    public boolean plannifierTacheAuto(Tache tache, LocalDate dateLimit, int n) {
+    public boolean plannifierTacheAuto(TacheSimple tache, LocalDate dateLimit, int n) {
         Iterator<Jour> iterator = this.listeJours.iterator();
         int i = 0;
         boolean tachePlanifiee = false;
