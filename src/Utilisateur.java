@@ -55,7 +55,7 @@ public class Utilisateur implements Serializable {
         return this.calendrier.plannifierTacheAuto(tache, n);
     }
 
-    public boolean plannifierTacheAuto(Tache tache, LocalDate dateLimit, int n) {
+    public boolean plannifierTacheAuto(TacheSimple tache, LocalDate dateLimit, int n) {
         return this.calendrier.plannifierTacheAuto(tache, dateLimit, n);
     }
 

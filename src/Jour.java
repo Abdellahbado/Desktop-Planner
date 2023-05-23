@@ -34,17 +34,20 @@ public class Jour implements Comparable<Jour>, Serializable {
             creneau.afficher();
         }
     }
-    public void creerCreneauPeriodique(LocalTime heurD, LocalTime heurF){
-        Creneau creneau = new Creneau(heurD,heurF,EtatCreneau.Libre,null);
-        if(listeCreneaux != null && listeCreneaux.contains(creneau)){
-           return;
-        }else if(listeCreneaux == null){
+
+    public void creerCreneauPeriodique(LocalTime heurD, LocalTime heurF) {
+        Creneau creneau = new Creneau(heurD, heurF, EtatCreneau.Libre, null);
+        if (listeCreneaux != null && listeCreneaux.contains(creneau)) {
+            return;
+        } else if (listeCreneaux == null) {
             listeCreneaux = new TreeSet<>();
             listeCreneaux.add(creneau);
-        } else{
+        } else {
             listeCreneaux.add(creneau);
-        };
+        }
+        ;
     }
+
     public boolean plannifierTacheAuto(Tache tache) {
         //fonction nchof fiha ida kayn creneau libre w la duree ta3o tkfi
         Iterator<Creneau> iterator = this.listeCreneaux.iterator();
@@ -55,8 +58,10 @@ public class Jour implements Comparable<Jour>, Serializable {
                 if (creneau.getDuration().toMinutes() >= tache.getDuree()) {
                     creneau.planifierTache(tache);
                     if (creneau.getDuration().toMinutes() - tache.getDuree() >= 30) {
+                        LocalTime heurFin = creneau.getHeureDebut().plusMinutes(tache.getDuree());
                         LocalTime nouvHeureDeb = creneau.getHeureDebut().minusMinutes(tache.getDuree());
                         Creneau nouvCreneau = new Creneau(nouvHeureDeb, creneau.getHeureFin(), EtatCreneau.Libre, null);
+                        creneau.setHeureFin(heurFin);
                         this.listeCreneaux.add(nouvCreneau);
                     }
                     return true;
@@ -73,8 +78,10 @@ public class Jour implements Comparable<Jour>, Serializable {
                     creneau.planifierTache(tache);
                     creneau.setBloque(bloque);
                     if (creneau.getDuration().toMinutes() - tache.getDuree() >= 30) {
-                        LocalTime nouvHeureDeb = creneau.getHeureDebut().minusMinutes(tache.getDuree());
+                        LocalTime heurFin = creneau.getHeureDebut().plusMinutes(tache.getDuree());
+                        LocalTime nouvHeureDeb = creneau.getHeureDebut().plusMinutes(tache.getDuree());
                         Creneau nouvCreneau = new Creneau(nouvHeureDeb, creneau.getHeureFin(), EtatCreneau.Libre, null);
+                        creneau.setHeureFin(heurFin);
                         this.listeCreneaux.add(nouvCreneau);
                     }
                     return true;
