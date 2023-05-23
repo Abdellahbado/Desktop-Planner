@@ -2,6 +2,9 @@ import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Iterator;
+import java.util.*;
+import java.util.TreeSet;
+
 import java.util.TreeSet;
 
 public class Planning implements Serializable {
@@ -94,6 +97,10 @@ public class Planning implements Serializable {
         return tachePlanifiee;
     }
 
+    public TreeSet<Jour> getListeJours() {
+        return listeJours;
+    }
+
     public void creerCreneauPeriodique(LocalTime heurD, LocalTime heurF, int p) {
         int i = 0;
         for (Jour jour : this.listeJours) {
@@ -169,5 +176,96 @@ public class Planning implements Serializable {
             }
         }
     }
+    public List<Creneau> SousTacheMN(String name) {
+        List<Creneau> listCr = new ArrayList<>();
+        Tache tache;
+        for (Jour jour : this.listeJours) {
+            for (Creneau creneau : jour.getListeCreneaux()) {
+                tache = creneau.getTache();
+                if (tache.getNom().equals(name)) {
+                    listCr.add(creneau);
+                }
+            }
+        }
 
+        return listCr;
+    }
+
+    public boolean replanifier(TacheDecomposable tache, long dureeSupp, long dureeMin) {
+
+        TacheDecomposable tacheReplanifier = new TacheDecomposable(tache.getNom(), dureeSupp, tache.getPriorite(), tache.getCategorie());
+        List<Creneau> LesCr = SousTacheMN(tache.getNom());
+        if(LesCr.get(1).getEtatCreneau()!=EtatCreneau.Bloque) {
+            TacheDecomposable tacheDec = (TacheDecomposable) LesCr.get(LesCr.size() - 1).getTache();
+            tacheReplanifier.setNumSousTache(tacheDec.getNumSousTache() + 1);
+            tacheReplanifier.setNomSousTache(tache.getNom() + tacheDec.getNumSousTache());
+            tacheReplanifier.setEtatAvancement(EtatAvancement.notRealised);
+            return plannifierTacheDecomp(tacheReplanifier);
+        }
+        else {
+            return false;
+        }
+    }
+
+
+    public boolean replanifier(TacheDecomposable tache, long dureeSupp, long dureeMin, LocalDate dateLimite) {
+
+        TacheDecomposable tacheReplanifier = new TacheDecomposable(tache.getNom(), dureeSupp, tache.getPriorite(), tache.getCategorie());
+        List<Creneau> LesCr = SousTacheMN(tache.getNom());
+        if(LesCr.get(1).getEtatCreneau()!=EtatCreneau.Bloque) {
+
+            TacheDecomposable tacheDec = (TacheDecomposable) LesCr.get(LesCr.size() - 1).getTache();
+            tacheReplanifier.setNumSousTache(tacheDec.getNumSousTache() + 1);
+            tacheReplanifier.setNomSousTache(tache.getNom() + tacheDec.getNumSousTache());
+            tacheReplanifier.setEtatAvancement(EtatAvancement.notRealised);
+            return plannifierTacheDecomp(tacheReplanifier);
+        }
+        else {
+            return false;
+        }
+    }
+
+    public Jour rentable() {
+        Jour rentDay = listeJours.first();
+        for (Jour jour : listeJours) {
+            if (jour.TacheComplet() > rentDay.TacheComplet()) {
+                rentDay = jour;
+            }
+        }
+        return rentDay;
+    }
+
+    public long categTime(Categorie categorie){
+        long time=0;
+        for(Jour jour:listeJours){
+            for(Creneau creneau : jour.getListeCreneaux()){
+                if(creneau.getTache().getCategorie()==categorie){
+                    time=time+creneau.getTache().getDuree();
+                }
+            }
+        }
+        return time;
+    }
+
+    public long rendRate(Jour jour) throws ArithmeticException{
+        int total=0;
+        for(Creneau creneau:jour.getListeCreneaux()){
+            if(creneau.getTache()!=null){
+                total++;
+            }
+        }
+        return total/jour.TacheComplet();
+    }
+
+    public long moyRend(){
+        int totalDays=0;
+        long totalRate=0;
+
+
+        for(Jour day:listeJours){
+            totalRate=totalRate+this.rendRate(day);
+            totalDays++;
+        }
+        return totalRate/totalDays;
+    }
 }

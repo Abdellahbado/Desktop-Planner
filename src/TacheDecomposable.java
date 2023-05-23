@@ -11,6 +11,10 @@ public class TacheDecomposable extends Tache {
         this.numSousTache = numSousTache;
     }
 
+    public TacheDecomposable(String nom, long duree, Priorite priorite, Categorie categorie){
+        super(nom,duree,priorite,categorie);
+    }
+
     @Override
     public void afficher() {
         super.afficher();
@@ -39,4 +43,12 @@ public class TacheDecomposable extends Tache {
         return this.nomSousTache;
     }
 
+
+    public void setNomSousTache(String nomSousTache) {
+        this.nomSousTache = nomSousTache;
+    }
+
+    public void setNumSousTache(int numSousTache) {
+        this.numSousTache = numSousTache;
+    }
 }

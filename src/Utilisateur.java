@@ -13,7 +13,7 @@ public class Utilisateur implements Serializable {
     private SortedSet<Projet> listeProjets = new TreeSet<Projet>();
     private ArrayList<Tache> tachesIntroduites;
     private long dureeMinimale;
-    private Badge[] listeBadges;
+    private ArrayList<Badge> badges;
     private int encouragement;
 
     public Utilisateur(Planning planning) {
@@ -103,4 +103,32 @@ public class Utilisateur implements Serializable {
         this.connected = state;
     }
 
+    public void countBadges (){
+        int passedMinCounter=0;
+        int goodCounter=0;
+        int veryGoodCounter=0;
+
+        for(Jour day:this.calendrier.getListeJours()){
+            if(day.passedMin()){
+                passedMinCounter++;
+                if(passedMinCounter==5){
+                    goodCounter++;
+                    badges.add(Badge.Good);
+                    passedMinCounter=0;
+                    if(goodCounter==3){
+                        veryGoodCounter++;
+                        badges.add(Badge.VeryGood);
+                        goodCounter=0;
+                        if(veryGoodCounter==3) {
+                            badges.add(Badge.Excellent);
+                            veryGoodCounter = 0;
+                        }
+                    }
+                }
+            }
+            else {
+                passedMinCounter=0;
+            }
+        }
+    }
 }

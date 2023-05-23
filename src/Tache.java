@@ -21,6 +21,13 @@ public abstract class Tache implements Serializable,Comparable<Tache> {
         this.etatAvancement = etatAvancement;
     }
 
+    public Tache(String nom, long duree, Priorite priorite,Categorie categorie ){
+        this.nom=nom;
+        this.duree= duree;
+        this.priorite = priorite;
+        this.categorie = categorie;
+    }
+
 
     protected void afficher() {
         System.out.println("Nom de la tâche: " + this.nom);
