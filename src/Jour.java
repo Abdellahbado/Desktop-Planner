@@ -8,7 +8,7 @@ public class Jour implements Comparable<Jour>, Serializable {
     static int nombreJours = 0;
     private TreeSet<Creneau> listeCreneaux;
     private LocalDate date;
-    private int minTask=3;
+    private int minTask = 3;
 
 
     public Jour(LocalDate date, TreeSet<Creneau> listeCreneaux) {
@@ -33,6 +33,10 @@ public class Jour implements Comparable<Jour>, Serializable {
 
     public void setMinTask(int minTask) {
         this.minTask = minTask;
+    }
+
+    public int getNombreCreneaux() {
+        return this.listeCreneaux.size();
     }
 
     //private EtatAvancement etatAvancement;
@@ -69,7 +73,7 @@ public class Jour implements Comparable<Jour>, Serializable {
                     creneau.planifierTache(tache);
                     if (creneau.getDuration().toMinutes() - tache.getDuree() >= 30) {
                         LocalTime heurFin = creneau.getHeureDebut().plusMinutes(tache.getDuree());
-                        LocalTime nouvHeureDeb = creneau.getHeureDebut().minusMinutes(tache.getDuree());
+                        LocalTime nouvHeureDeb = creneau.getHeureDebut().plusMinutes(tache.getDuree());
                         Creneau nouvCreneau = new Creneau(nouvHeureDeb, creneau.getHeureFin(), EtatCreneau.Libre, null);
                         creneau.setHeureFin(heurFin);
                         this.listeCreneaux.add(nouvCreneau);
@@ -125,17 +129,22 @@ public class Jour implements Comparable<Jour>, Serializable {
     public int compareTo(Jour jour) {
         return this.date.compareTo(jour.getDate());
     }
-    public TreeSet<Creneau> getListeCreneaux(){return this.listeCreneaux;}
-    public int TacheComplet(){
-        int count=0;
-        for(Creneau creneau :listeCreneaux){
-            if(creneau.getTache().getEtatAvancement()==EtatAvancement.Completed){
+
+    public TreeSet<Creneau> getListeCreneaux() {
+        return this.listeCreneaux;
+    }
+
+    public int TacheComplet() {
+        int count = 0;
+        for (Creneau creneau : listeCreneaux) {
+            if (creneau.getTache().getEtatAvancement() == EtatAvancement.Completed) {
                 count++;
             }
         }
         return count;
     }
-    public boolean passedMin(){
-        return this.TacheComplet()>this.minTask;
+
+    public boolean passedMin() {
+        return this.TacheComplet() > this.minTask;
     }
 }

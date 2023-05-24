@@ -65,6 +65,21 @@ public class Utilisateur implements Serializable {
         return planning;
     }
 
+    public boolean plannifierTaches() {
+        if (this.tachesIntroduites == null) return false;
+        boolean tachesPlanifiee = false;
+        for (Tache tache : this.tachesIntroduites) {
+            if (tache instanceof TacheDecomposable) {
+                tachesPlanifiee = calendrier.plannifierTacheDecomp((TacheDecomposable) tache);
+                if (!tachesPlanifiee) return false;
+            } else if (tache instanceof TacheSimple) {
+                tachesPlanifiee = calendrier.plannifierTacheAuto((TacheSimple) tache, ((TacheSimple) tache).getPeriodicite());
+                if (!tachesPlanifiee) return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(pseudo, motDePasse);

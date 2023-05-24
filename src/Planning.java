@@ -1,10 +1,9 @@
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.*;
-import java.util.TreeSet;
-
+import java.util.List;
 import java.util.TreeSet;
 
 public class Planning implements Serializable {
@@ -50,6 +49,42 @@ public class Planning implements Serializable {
             System.out.println("Error occurred while deserializing the planning variable: " + e.getMessage());
         }
         return (Planning) planningVariable;
+    }
+
+    public ArrayList<Creneau> getCreneaux() {
+        ArrayList<Creneau> list = new ArrayList<>();
+        for (Jour jour : this.listeJours) {
+            list.addAll(jour.getListeCreneaux());
+        }
+        return list;
+    }
+
+    public ArrayList<String> getListNomTaches() {
+        ArrayList<String> list = new ArrayList<>();
+        int i = 0;
+        for (Jour jour : this.listeJours) {
+            for (Creneau creneau : jour.getListeCreneaux()) {
+                i++;
+                if (creneau.getTache() == null) {
+                    list.add("Aucune tâche assignée");
+                } else {
+                    list.add(creneau.getTache().getNom());
+                }
+            }
+        }
+        System.out.println("nb creneau = " + i);
+        return list;
+    }
+
+    public ArrayList<Jour> getJourrDupl() {
+        ArrayList<Jour> list = new ArrayList<>();
+        for (Jour jour : listeJours) {
+            int nbCr = jour.getNombreCreneaux();
+            for (int i = 0; i < nbCr; i++) {
+                list.add(jour);
+            }
+        }
+        return list;
     }
 
     public void afficherListeJours() {
@@ -176,6 +211,7 @@ public class Planning implements Serializable {
             }
         }
     }
+
     public List<Creneau> SousTacheMN(String name) {
         List<Creneau> listCr = new ArrayList<>();
         Tache tache;
@@ -195,14 +231,13 @@ public class Planning implements Serializable {
 
         TacheDecomposable tacheReplanifier = new TacheDecomposable(tache.getNom(), dureeSupp, tache.getPriorite(), tache.getCategorie());
         List<Creneau> LesCr = SousTacheMN(tache.getNom());
-        if(LesCr.get(1).getEtatCreneau()!=EtatCreneau.Bloque) {
+        if (LesCr.get(1).getEtatCreneau() != EtatCreneau.Bloque) {
             TacheDecomposable tacheDec = (TacheDecomposable) LesCr.get(LesCr.size() - 1).getTache();
             tacheReplanifier.setNumSousTache(tacheDec.getNumSousTache() + 1);
             tacheReplanifier.setNomSousTache(tache.getNom() + tacheDec.getNumSousTache());
             tacheReplanifier.setEtatAvancement(EtatAvancement.notRealised);
             return plannifierTacheDecomp(tacheReplanifier);
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -212,15 +247,14 @@ public class Planning implements Serializable {
 
         TacheDecomposable tacheReplanifier = new TacheDecomposable(tache.getNom(), dureeSupp, tache.getPriorite(), tache.getCategorie());
         List<Creneau> LesCr = SousTacheMN(tache.getNom());
-        if(LesCr.get(1).getEtatCreneau()!=EtatCreneau.Bloque) {
+        if (LesCr.get(1).getEtatCreneau() != EtatCreneau.Bloque) {
 
             TacheDecomposable tacheDec = (TacheDecomposable) LesCr.get(LesCr.size() - 1).getTache();
             tacheReplanifier.setNumSousTache(tacheDec.getNumSousTache() + 1);
             tacheReplanifier.setNomSousTache(tache.getNom() + tacheDec.getNumSousTache());
             tacheReplanifier.setEtatAvancement(EtatAvancement.notRealised);
             return plannifierTacheDecomp(tacheReplanifier);
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -235,37 +269,37 @@ public class Planning implements Serializable {
         return rentDay;
     }
 
-    public long categTime(Categorie categorie){
-        long time=0;
-        for(Jour jour:listeJours){
-            for(Creneau creneau : jour.getListeCreneaux()){
-                if(creneau.getTache().getCategorie()==categorie){
-                    time=time+creneau.getTache().getDuree();
+    public long categTime(Categorie categorie) {
+        long time = 0;
+        for (Jour jour : listeJours) {
+            for (Creneau creneau : jour.getListeCreneaux()) {
+                if (creneau.getTache().getCategorie() == categorie) {
+                    time = time + creneau.getTache().getDuree();
                 }
             }
         }
         return time;
     }
 
-    public long rendRate(Jour jour) throws ArithmeticException{
-        int total=0;
-        for(Creneau creneau:jour.getListeCreneaux()){
-            if(creneau.getTache()!=null){
+    public long rendRate(Jour jour) throws ArithmeticException {
+        int total = 0;
+        for (Creneau creneau : jour.getListeCreneaux()) {
+            if (creneau.getTache() != null) {
                 total++;
             }
         }
-        return total/jour.TacheComplet();
+        return total / jour.TacheComplet();
     }
 
-    public long moyRend(){
-        int totalDays=0;
-        long totalRate=0;
+    public long moyRend() {
+        int totalDays = 0;
+        long totalRate = 0;
 
 
-        for(Jour day:listeJours){
-            totalRate=totalRate+this.rendRate(day);
+        for (Jour day : listeJours) {
+            totalRate = totalRate + this.rendRate(day);
             totalDays++;
         }
-        return totalRate/totalDays;
+        return totalRate / totalDays;
     }
 }

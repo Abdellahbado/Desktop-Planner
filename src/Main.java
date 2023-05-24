@@ -46,29 +46,42 @@ public class Main {
         Creneau creneau16 = new Creneau(LocalTime.of(10, 0), LocalTime.of(11, 0), EtatCreneau.Libre, null);
         Creneau creneau17 = new Creneau(LocalTime.of(13, 0), LocalTime.of(14, 0), EtatCreneau.Libre, null);
         Creneau creneau18 = new Creneau(LocalTime.of(14, 0), LocalTime.of(15, 0), EtatCreneau.Libre, null);
-        /*planning1.introduitCreneau(creneau11, LocalDate.of(2023, 5, 29));
-        planning1.introduitCreneau(creneau12, LocalDate.of(2023, 5, 30));
-        planning1.introduitCreneau(creneau13, LocalDate.of(2023, 5, 31));
-        planning1.introduitCreneau(creneau14, LocalDate.of(2023, 6, 1));
-        planning1.introduitCreneau(creneau15, LocalDate.of(2023, 6, 2));
-        planning1.introduitCreneau(creneau16, LocalDate.of(2023, 6, 3));
-        planning1.introduitCreneau(creneau17, LocalDate.of(2023, 6, 4));
-        planning1.introduitCreneau(creneau18, LocalDate.of(2023, 6, 5));*/
-        planning1.creerCreneauPeriodique(LocalTime.of(21, 0), LocalTime.of(22, 0), 1);
+        planning1.introduitCreneau(creneau11, LocalDate.of(2023, 5, 29));
+        planning1.introduitCreneau(creneau12, LocalDate.of(2023, 5, 29));
+        planning1.introduitCreneau(creneau13, LocalDate.of(2023, 5, 29));
+        planning1.introduitCreneau(creneau14, LocalDate.of(2023, 5, 29));
+        planning1.introduitCreneau(creneau15, LocalDate.of(2023, 6, 1));
+        planning1.introduitCreneau(creneau16, LocalDate.of(2023, 6, 2));
+        planning1.introduitCreneau(creneau17, LocalDate.of(2023, 6, 2));
+        planning1.introduitCreneau(creneau18, LocalDate.of(2023, 6, 2));
+        //planning1.creerCreneauPeriodique(LocalTime.of(21, 0), LocalTime.of(22, 0), 1);
         boolean bool2 = planning1.plannifierTacheDecomp(tacheDecomposable1);
-        //boolean bool4 = planning1.plannifierTacheAuto(tacheSimple1, tacheSimple1.getPeriodicite());
-        boolean bool4 = planning1.plannifierTacheManu(tacheSimple1, LocalDate.of(2023, 6, 2), LocalTime.of(21, 0), false);
+        boolean bool4 = planning1.plannifierTacheAuto(tacheSimple1, tacheSimple1.getPeriodicite());
+        ///boolean bool4 = planning1.plannifierTacheManu(tacheSimple1, LocalDate.of(2023, 6, 2), LocalTime.of(21, 0), false);
         planning1.afficherListeJours();
-        System.out.println("Boolean = " + bool2 + " Boolean2 = " + bool4);
+        /*for (Jour jour : planning1.getJourrDupl()) {
+            System.out.println("le jour est : " + jour.getDate());
+        }*/
+
+        for (Creneau creneau : planning1.getCreneaux()) {
+            System.out.println("Le creneau est : " + creneau.getHeureDebut() + " fin =" + creneau.getHeureFin());
+        }
+
+        for (String nom : planning1.getListNomTaches()) {
+            System.out.println(nom);
+        }
+
+
+        //System.out.println("Boolean = " + bool2 + " Boolean2 = " + bool4);
         Utilisateur utilisateur1 = new Utilisateur(planning1);
 
         HashSet<Utilisateur> listeUtilisateures = new HashSet<>();
         listeUtilisateures.add(utilisateur);
         listeUtilisateures.add(utilisateur1);
-        MyDesktopPlanner myDesktopPlanner = new MyDesktopPlanner(listeUtilisateures);
-        String filename = "utilisateurs.ser"; // File name to store the serialized object
-        myDesktopPlanner.serialize(filename);
-        MyDesktopPlanner myDesktopPlanner1 = MyDesktopPlanner.deserialize(filename);
+        //MyDesktopPlanner myDesktopPlanner = new MyDesktopPlanner(listeUtilisateures);
+        //String filename = "utilisateurs.ser"; // File name to store the serialized object
+        //myDesktopPlanner.serialize(filename);
+        //MyDesktopPlanner myDesktopPlanner1 = MyDesktopPlanner.deserialize(filename);
         /*try (FileOutputStream fileOut = new FileOutputStream(filename);
              ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
             out.writeObject(myDesktopPlanner);

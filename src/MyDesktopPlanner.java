@@ -8,6 +8,18 @@ public class MyDesktopPlanner implements Serializable {
         this.listeUtilisateures = listeUtilisateures;
     }
 
+    public static MyDesktopPlanner deserialize(String filename) {
+        MyDesktopPlanner myDesktopPlanner = null;
+        try (FileInputStream fileIn = new FileInputStream(filename);
+             ObjectInputStream in = new ObjectInputStream(fileIn)) {
+            myDesktopPlanner = (MyDesktopPlanner) in.readObject();
+            System.out.println("Object deserialized from " + filename);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return myDesktopPlanner;
+    }
+
     public void signUp(String pseudo, String passWord) {
 
         listeUtilisateures.add(new Utilisateur(pseudo, passWord));
@@ -23,18 +35,6 @@ public class MyDesktopPlanner implements Serializable {
         }
     }
 
-    public static MyDesktopPlanner deserialize(String filename) {
-        MyDesktopPlanner myDesktopPlanner = null;
-        try (FileInputStream fileIn = new FileInputStream(filename);
-             ObjectInputStream in = new ObjectInputStream(fileIn)) {
-            myDesktopPlanner = (MyDesktopPlanner) in.readObject();
-            System.out.println("Object deserialized from " + filename);
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return myDesktopPlanner;
-    }
-
     public boolean signIn(String pseudo, String passWord) {
         Utilisateur u = new Utilisateur(pseudo, passWord);
         for (Utilisateur user : listeUtilisateures) {
@@ -45,6 +45,16 @@ public class MyDesktopPlanner implements Serializable {
         }
         return false;
 
+    }
+
+    public Utilisateur getUser(String pseudo, String passWord) {
+        Utilisateur u = new Utilisateur(pseudo, passWord);
+        for (Utilisateur user : listeUtilisateures) {
+            if (user.equals(u)) {
+                return user;
+            }
+        }
+        return null;
     }
 
     public void ajouterUtilisateur(Utilisateur utilisateur) {
