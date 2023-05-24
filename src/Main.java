@@ -68,8 +68,7 @@ public class Main {
         MyDesktopPlanner myDesktopPlanner = new MyDesktopPlanner(listeUtilisateures);
         String filename = "utilisateurs.ser"; // File name to store the serialized object
         myDesktopPlanner.serialize(filename);
-        MyDesktopPlanner myDesktopPlanner1 = myDesktopPlanner.deserialize(filename);
-
+        MyDesktopPlanner myDesktopPlanner1 = MyDesktopPlanner.deserialize(filename);
         /*try (FileOutputStream fileOut = new FileOutputStream(filename);
              ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
             out.writeObject(myDesktopPlanner);

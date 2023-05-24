@@ -1,4 +1,4 @@
-import java.io.Serializable;
+import java.io.*;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.*;
@@ -42,6 +42,29 @@ public class Utilisateur implements Serializable {
                 && Objects.equals(motDePasse, otherUser.motDePasse);
     }
 
+
+    public void sauvgarderPlanning(Planning planning, String fileName) {
+        try (FileOutputStream fileOut = new FileOutputStream(fileName);
+             ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
+            out.writeObject(planning);
+            System.out.println("Planning saved to " + fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Planning chargerPlanning(String fileName) {
+        Planning planning = null;
+        try (FileInputStream fileIn = new FileInputStream(fileName);
+             ObjectInputStream in = new ObjectInputStream(fileIn)) {
+            planning = (Planning) in.readObject();
+            System.out.println("Planning loaded from " + fileName);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return planning;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(pseudo, motDePasse);
@@ -60,7 +83,7 @@ public class Utilisateur implements Serializable {
     }
 
     // this will return a tache introduit par user
-    public void introduitTaches(String nom, long duree, Priorite priorite, LocalDate dateLimite, Categorie categorie, String type, int periode) throws ParseException {
+    public Tache introduitTache(String nom, long duree, Priorite priorite, LocalDate dateLimite, Categorie categorie, String type, int periode) throws ParseException {
 
         Tache t;
         if (type.toLowerCase().compareTo("simple") == 0) {
@@ -69,6 +92,7 @@ public class Utilisateur implements Serializable {
             t = new TacheDecomposable(nom, duree, priorite, dateLimite, categorie, EtatAvancement.Unscheduled, nom + " " + Integer.toString(1), 1);
         }
         this.tachesIntroduites.add(t);
+        return t;
     }
 
     public void creerProjet(String titre, String description) {
@@ -103,31 +127,30 @@ public class Utilisateur implements Serializable {
         this.connected = state;
     }
 
-    public void countBadges (){
-        int passedMinCounter=0;
-        int goodCounter=0;
-        int veryGoodCounter=0;
+    public void countBadges() {
+        int passedMinCounter = 0;
+        int goodCounter = 0;
+        int veryGoodCounter = 0;
 
-        for(Jour day:this.calendrier.getListeJours()){
-            if(day.passedMin()){
+        for (Jour day : this.calendrier.getListeJours()) {
+            if (day.passedMin()) {
                 passedMinCounter++;
-                if(passedMinCounter==5){
+                if (passedMinCounter == 5) {
                     goodCounter++;
                     badges.add(Badge.Good);
-                    passedMinCounter=0;
-                    if(goodCounter==3){
+                    passedMinCounter = 0;
+                    if (goodCounter == 3) {
                         veryGoodCounter++;
                         badges.add(Badge.VeryGood);
-                        goodCounter=0;
-                        if(veryGoodCounter==3) {
+                        goodCounter = 0;
+                        if (veryGoodCounter == 3) {
                             badges.add(Badge.Excellent);
                             veryGoodCounter = 0;
                         }
                     }
                 }
-            }
-            else {
-                passedMinCounter=0;
+            } else {
+                passedMinCounter = 0;
             }
         }
     }

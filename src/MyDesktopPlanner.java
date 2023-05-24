@@ -23,7 +23,7 @@ public class MyDesktopPlanner implements Serializable {
         }
     }
 
-    public MyDesktopPlanner deserialize(String filename) {
+    public static MyDesktopPlanner deserialize(String filename) {
         MyDesktopPlanner myDesktopPlanner = null;
         try (FileInputStream fileIn = new FileInputStream(filename);
              ObjectInputStream in = new ObjectInputStream(fileIn)) {
