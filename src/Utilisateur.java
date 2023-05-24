@@ -91,8 +91,19 @@ public class Utilisateur implements Serializable {
         } else {
             t = new TacheDecomposable(nom, duree, priorite, dateLimite, categorie, EtatAvancement.Unscheduled, nom + " " + Integer.toString(1), 1);
         }
-        this.tachesIntroduites.add(t);
         return t;
+    }
+
+
+    public void sauvgarderTache(String nom, long duree, Priorite priorite, LocalDate dateLimite, Categorie categorie, String type, int periode) throws ParseException {
+
+        Tache t;
+        if (type.toLowerCase().compareTo("simple") == 0) {
+            t = new TacheSimple(nom, duree, priorite, dateLimite, categorie, EtatAvancement.Unscheduled, periode);
+        } else {
+            t = new TacheDecomposable(nom, duree, priorite, dateLimite, categorie, EtatAvancement.Unscheduled, nom + " " + Integer.toString(1), 1);
+        }
+        this.tachesIntroduites.add(t);
     }
 
     public void creerProjet(String titre, String description) {
