@@ -1,7 +1,10 @@
 import java.io.*;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Objects;
 
 public class Utilisateur implements Serializable {
     static int lastId = 0;
@@ -10,7 +13,7 @@ public class Utilisateur implements Serializable {
     private String motDePasse;
     private boolean connected;
     private Planning calendrier;
-    private SortedSet<Projet> listeProjets = new TreeSet<Projet>();
+    private HashSet<Projet> listeProjets = new HashSet<Projet>();
     private ArrayList<Tache> tachesIntroduites;
     private long dureeMinimale;
     private ArrayList<Badge> badges;
@@ -121,9 +124,10 @@ public class Utilisateur implements Serializable {
         this.tachesIntroduites.add(t);
     }
 
-    public void creerProjet(String titre, String description) {
-        Projet projet = new Projet(titre, description, null);
+    public Projet creerProjet(String titre, String description) {
+        Projet projet = new Projet(titre, description, new HashSet<>());
         this.listeProjets.add(projet);
+        return projet;
     }
 
 
@@ -153,6 +157,16 @@ public class Utilisateur implements Serializable {
         this.connected = state;
     }
 
+
+    public ArrayList<Badge> getBadges() {
+        return badges;
+    }
+
+    public HashSet<Projet> getListeProjets() {
+        return listeProjets;
+    }
+
+
     public void countBadges() {
         int passedMinCounter = 0;
         int goodCounter = 0;
@@ -160,6 +174,7 @@ public class Utilisateur implements Serializable {
 
         for (Jour day : this.calendrier.getListeJours()) {
             if (day.passedMin()) {
+
                 passedMinCounter++;
                 if (passedMinCounter == 5) {
                     goodCounter++;

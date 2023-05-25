@@ -72,9 +72,43 @@ public class Planning implements Serializable {
                 }
             }
         }
-        System.out.println("nb creneau = " + i);
         return list;
     }
+
+    public ArrayList<Tache> getListTaches() {
+        ArrayList<Tache> list = new ArrayList<>();
+        for (Jour jour : this.listeJours) {
+            for (Creneau creneau : jour.getListeCreneaux()) {
+                list.add(creneau.getTache());
+            }
+        }
+        return list;
+    }
+
+
+    public ArrayList<Creneau> getCreneauxDate(LocalDate date) {
+        ArrayList<Creneau> list = new ArrayList<>();
+        for (Jour jour : listeJours) {
+            if (jour.getDate().equals(date)) {
+                list.addAll(jour.getListeCreneaux());
+                break;
+            }
+        }
+        return list;
+    }
+
+    public ArrayList<Tache> getTachesDate(LocalDate date) {
+        ArrayList<Tache> list = new ArrayList<>();
+        for (Jour jour : listeJours) {
+            if (jour.getDate().equals(date)) {
+                for (Creneau creneau : jour.getListeCreneaux()) {
+                    list.add(creneau.getTache());
+                }
+            }
+        }
+        return list;
+    }
+
 
     public ArrayList<Jour> getJourrDupl() {
         ArrayList<Jour> list = new ArrayList<>();
@@ -227,7 +261,23 @@ public class Planning implements Serializable {
         return listCr;
     }
 
-    public boolean replanifier(TacheDecomposable tache, long dureeSupp, long dureeMin) {
+
+    public void setEtatAvancTache(LocalDate date, String tacheNom, EtatAvancement etatAvancement) {
+        for (Jour jour : listeJours) {
+            if (jour.getDate().equals(date)) {
+                for (Creneau creneau : jour.getListeCreneaux()) {
+                    if (creneau.getTache() != null)
+                        if (creneau.getTache().getNom().equals(tacheNom)) {
+                            creneau.getTache().setEtatAvancement(etatAvancement);
+                            break;
+                        }
+                }
+                break;
+            }
+        }
+    }
+
+    public boolean rePlanifier(TacheDecomposable tache, long dureeSupp, long dureeMin) {
 
         TacheDecomposable tacheReplanifier = new TacheDecomposable(tache.getNom(), dureeSupp, tache.getPriorite(), tache.getCategorie());
         List<Creneau> LesCr = SousTacheMN(tache.getNom());
@@ -243,7 +293,7 @@ public class Planning implements Serializable {
     }
 
 
-    public boolean replanifier(TacheDecomposable tache, long dureeSupp, long dureeMin, LocalDate dateLimite) {
+    public boolean rePlanifier(TacheDecomposable tache, long dureeSupp, long dureeMin, LocalDate dateLimite) {
 
         TacheDecomposable tacheReplanifier = new TacheDecomposable(tache.getNom(), dureeSupp, tache.getPriorite(), tache.getCategorie());
         List<Creneau> LesCr = SousTacheMN(tache.getNom());
@@ -289,6 +339,13 @@ public class Planning implements Serializable {
             }
         }
         return total / jour.TacheComplet();
+    }
+
+    public Jour getJourByDate(LocalDate date){
+        for(Jour jour:listeJours){
+            if(jour.getDate().equals(date)) return jour;
+        }
+        return null;
     }
 
     public long moyRend() {

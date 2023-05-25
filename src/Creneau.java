@@ -18,6 +18,7 @@ public class Creneau implements Comparable<Creneau>, Serializable {
         this.etatCreneau = etCr;
     }
 
+
     public static Creneau creerCreneau() {
         Creneau cr = new Creneau(null, null, EtatCreneau.Occupe, null);
         Scanner scanner = new Scanner(System.in);
